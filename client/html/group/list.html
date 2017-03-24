@@ -1,0 +1,162 @@
+
+<div class="modal inmodal fade" id="modalcreate" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="selfmodal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="form_banner" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">群组名称</label>
+                        <div class="row col-sm-9">
+                            <input name="name" readonly type="text" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">成员数量</label>
+                        <div class="row col-sm-9">
+                            <input name="membernum" readonly type="text" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">上传群组二维码</label>
+                        <div class="row col-sm-9">
+                            <div style="float:left;" id="img_com"></div>
+                            <br/>
+                            <br/>
+                            <img style="height:100px;" id="img" name="qrcode"/>
+                            <input type="hidden" tipMsg="必须上传图片!!" validate="empty" id="img_hidden" name="qrcode"/>
+                        </div>
+                        <input type="hidden" name="id"/>
+                    </div>
+                    <!--<div class="form-group">
+                        <label class="col-sm-2 control-label">活动时间</label>
+                        <div class="row col-sm-9">
+                            <div class="col-md-6">
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <input type="text" class="form-control" placeholder="起始时间" name="a_time_start" vtype="datetime" tipMsg="开始时间填写错误" validate="date">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group date">
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                    <input type="text" class="form-control" placeholder="结束时间" name="a_time_stop" vtype="datetime" tipMsg="结束时间填写错误" validate="date">
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">机器人微信号</label>
+                        <div class="row col-sm-9">
+                            <input name="botname" readonly type="text" class="form-control"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in" id="save_banner">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>群信息管理</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <a>群管理</a>
+                    </li>
+                    <li class="active">
+                        <strong>群组信息管理</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight ecommerce">
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">群列表</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                        <div class="panel-body">
+                            <div class="row" style="margin-bottom: 10px;">
+                                <!--<div class="col-lg-2">
+                                    <input type="text" class="form-control" placeholder="频道ID" id="ch_id_sel">
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="text" class="form-control" placeholder="频道名称" id="ch_name_sel">
+                                </div>-->
+                                <div class="col-lg-2">
+                                    <select class="form-control" id="search_status">
+                                        <option value="0">未删除</option>
+                                        <option value="1">已删除</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <!--<button class="btn btn-white btn-keydown-search " type="button" id="searchchannel">搜索</button>
+
+                                    <button class="btn btn-white btn-keydown-search " type="button" id="create_new">新建</button>-->
+                                </div>
+                            </div>
+                            <div class="panel-body-custom">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-stripped">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                id
+                                            </th>
+                                            <th>
+                                                群名称
+                                            </th>
+                                            <th>
+                                                成员数量
+                                            </th>
+                                            <th>
+                                                群二维码
+                                            </th>
+                                            <th>
+                                                机器人微信号
+                                            </th>
+                                            <th>
+                                                二维码创建时间
+                                            </th>
+                                            <th>
+                                                历史进群总人数
+                                            </th>
+                                            <th>
+                                                操作
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="list_banner">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="row myclass" style="margin-bottom: 10px;">
+                    <div class="col-lg-12">
+                        <ul id="pagination-demo" class="visible-pages-example"></ul>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

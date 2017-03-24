@@ -1,0 +1,48 @@
+{
+  "scripts": {
+    "start": "npm run w-watch & npm run w-h5-watch & npm run g-watch & node server.js | bunyan",
+    "client": "npm run w-watch & npm run g-watch",
+    "pro_start": "webpack --progress --colors && webpack --config webpack.config.h5.js --progress --colors  && gulp replace && pm2 start server.js -i 4 --name=wxBox",
+    "pro_reload": "webpack --progress --colors && webpack --config webpack.config.h5.js --progress --colors  && gulp replace && pm2 gracefulReload wxBox",
+    "w-watch": "webpack --progress --colors --watch ",
+    "w-h5-watch": "webpack --config webpack.config.h5.js --progress --colors --watch ",
+    "g-watch": "gulp replace && gulp watch"
+  },
+  "dependencies": {
+    "accepts": "^1.3.3",
+    "axios": "^0.15.3",
+    "bunyan": "^1.8.5",
+    "co-wechat": "^1.0.0",
+    "glob": "^7.1.1",
+    "koa": "^1.2.0",
+    "koa-better-body": "^3.0.2",
+    "koa-bodyparser": "^2.3.0",
+    "koa-convert": "^1.2.0",
+    "koa-cors": "^0.0.16",
+    "koa-ejs": "^3.0.0",
+    "koa-generic-session": "^1.11.5",
+    "koa-json": "^1.1.3",
+    "koa-logger": "^1.3.1",
+    "koa-redis": "^2.1.3",
+    "koa-router": "^5.4.0",
+    "koa-static": "^2.1.0",
+    "pg": "^6.1.2",
+    "pg-native": "^1.10.0",
+    "request": "^2.79.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-3": "^6.22.0",
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "gulp": "^3.9.1",
+    "gulp-replace": "^0.5.4",
+    "html-webpack-plugin": "^2.28.0",
+    "html-webpack-template": "^6.0.1",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.14.0"
+  }
+}

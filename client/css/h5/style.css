@@ -1,0 +1,27 @@
+html{font-size:625%;}
+body {font-size: 0.14rem;font-family:'Arial, Helvetica, sans-serif';-webkit-overflow-scrolling:touch;/*1.4 × 10px = 14px */}
+html,body,section,div,p,span,i,img,strong,a{
+	box-sizing:border-box;
+    padding:0;
+    margin:0;
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+img{
+	outline: none;
+}
+ul{
+	list-style: none;
+}
+.clearfix:after {
+  content: " ";
+  display: block;
+  clear: both;
+  height: 0;
+}
+.clearfix {
+  zoom: 1;
+}
