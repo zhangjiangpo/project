@@ -16,6 +16,9 @@ var PGDAO = require('./server/lib/dbdao')
 var wxServer = require('./api/xhcwx/wxserver')
 var session = require('koa-generic-session')
 var RedisStore = require('koa-redis');
+//var sio_redis = require('socket.io-redis');
+
+var Mybody = require('./server/lib/my_body_parse.js');
 
 
 var config = require('./config');
@@ -44,7 +47,17 @@ global.baseurl = '';
 global.cbaseurl = '';
 
 var app = koa();
+
+var server = require('http').createServer(app.callback());
+
+/*global.SIO = require('socket.io')(server);
+SIO.adapter(sio_redis(config.redis));
+SIO.on('connection', function(s){
+    console.log('socket connect success');
+});*/
+
 app.keys = ['keys', 'keykeys'];
+
 app.use(static(path.join(__dirname, 'static')))
     .use(body())
     .use(session({
@@ -53,6 +66,7 @@ app.use(static(path.join(__dirname, 'static')))
     }))
     .use(cors({origin:'*'}))
     .use(koa_logger())
+    .use(Mybody())
     .use(function *(next) {
         this['parames'] = Object.assign({}, this.request.body, this.query);
         console.log('parames : ',this['parames'])
@@ -113,5 +127,6 @@ app.use(function*(next){
 })
 app.use(wxServer);
 
-app.listen(PORT);
+//app.listen(PORT);
+server.listen(PORT);
 console.log("server on port :%s",PORT);

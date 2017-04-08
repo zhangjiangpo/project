@@ -2,6 +2,8 @@ import 'babel-polyfill'
 import $ from './jquery'
 import './bootstrap'
 
+import '../css/stylenew.css'
+
 //modal 弹出框 最新的在最顶端
 $(document).on('show.bs.modal', '.modal', function (event) {
     var zIndex = 2050 + (10 * $('.modal:visible').length);
@@ -215,6 +217,20 @@ var util = (function() {
             var elem = document.createElement('div')
             elem.innerHTML = str
             return elem.innerText || elem.textContent
+        },
+        loading:function(handle){
+            if(handle == 'show'){
+                $('body').css('overflow','hidden');
+                var height = document.documentElement.scrollHeight;
+                var ch = document.documentElement.clientHeight;
+                var stop = document.documentElement.scrollTop;
+                var style = ` style="height:${height}px;" `;
+                var stylei = ` style="top:${ch/2 + stop}px;" `;
+                $(`<div ${style} class="common_loading"><i ${stylei}></i></div>`).appendTo($('body'));
+            }else if(handle == 'hide'){
+                $('body').css('overflow','auto')
+                $('.common_loading').remove();
+            }
         }
     };
     return u;

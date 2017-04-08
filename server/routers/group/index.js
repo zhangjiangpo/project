@@ -3,6 +3,12 @@ var xhcwx = require('../../lib/wxutil')
 
 var authlogin = require('../../lib/auth')
 
+function isToday(time){
+	time = new Date(time).toLocaleString();
+	var dnow = new Date().toLocaleString();
+	return dnow.substr(0,dnow.indexOf(' ')) == time.substr(0,time.indexOf(' '))
+}
+
 module.exports = function (r) {
 	r.use(authlogin.authHash());
 
@@ -19,10 +25,52 @@ module.exports = function (r) {
 		}
 		var data = yield DB.PG.select(`select * from group_info ${where} order by id desc`);
 		
+		var t = [];
+		//每日进群人数 刷新
+		data.map(r => {
+			if(r.join_time && !isToday(Number(r.join_time))){//记录的进群时间不是今天 清空
+				t.push(r.id)
+				r.day_join_num = 0;
+			}
+		})
+		if(t.length){
+			yield DB.PG.updateTable('group_info',{day_join_num:0},
+				t.length == 1 ? ` where id = ${t[0]} ` : ` where id in (${t.join(',')})`
+			)
+		}
+		
 		this.body = {
 			code : 0 ,
 			data : data
 		}
+	})
+	r.get('/group/data',function*(n){
+		var g_id = this.parames.g_id || -1;
+		var dy = new Date().toLocaleString();
+		dy = dy.substr(0,dy.indexOf(' '));
+		dy = new Date(dy).getTime();
+		var start_time = this.parames.start_time || dy;
+		var end_time = this.parames.end_time || Date.now();
+
+		var result = yield DB.PG.select(`select id,username,group_id,create_time from group_msg 
+			where group_id = :g_id and create_time > :start_time and create_time<=:end_time`,
+			{g_id,start_time,end_time});
+		var re = {
+			g_msg_num:result.length,
+			g_member_num:0,
+		},pepole = {};
+		result && result.map(r => {
+			if(!pepole[r.username]){
+				pepole[r.username] = 1;
+				re.g_member_num++;
+			}else{
+				pepole[r.username]++;
+			}
+		})
+		this.body = Object.assign({
+			detail:pepole,
+			code : 0,
+		},re)
 	})
 
 	r.post('/edit',function*(next){

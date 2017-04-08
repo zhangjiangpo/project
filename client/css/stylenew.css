@@ -7935,3 +7935,20 @@ ul{
   top:0;z-index: 9999;
   width: 100%;
 }
+.common_loading{
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background-color: rgba(0,0,0,0.2);
+}
+.common_loading i{
+  position:absolute;
+  width:30px;
+  height:30px;
+  left:50%;
+  margin-left:15px;
+  background:url('../xhc_img/loadding.gif') no-repeat;
+  background-size: contain;
+}

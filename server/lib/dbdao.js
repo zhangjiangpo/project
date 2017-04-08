@@ -29,6 +29,18 @@ var DBHandle = {
 			sql += a.join(',')
 		}
 		return DBHandle.sqlHanle(sql + where,param);
+	},
+	insertFormat : (tablename,param) => {
+		var sql = `insert into ${tablename} `;
+		var column = [],value = [];
+		if(param != undefined && param.constructor == Object){
+			Object.keys(param).map((r,i) => {
+				column.push(r);
+				value.push(':'+r);
+			})
+		}
+		sql += `(${column.join(',')}) values (${value.join(',')})`
+		return DBHandle.sqlHanle(sql,param);
 	}
 }
 
@@ -79,7 +91,27 @@ var DBdao = {
 						})
 					})
 				})
-			}
+			},
+			/*
+				tablename string 
+				param object(解析为key =:key)
+			*/
+			insertTable : (tablename,param) => {
+				return new Promise((resolve,reject) => {
+					pool.connect().then(c => {
+						var sqlP = DBHandle.insertFormat(tablename,param);
+						logger.debug(sqlP)
+						c.query(sqlP.sql, sqlP.param).then(r => {
+							c.release();
+							resolve(r.rows || []);
+						}).catch(e => {
+							c.release()
+							logger.error(e);
+							reject(e)
+						})
+					})
+				})
+			},
 		}
 	}
 }

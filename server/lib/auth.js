@@ -42,7 +42,7 @@ module.exports = {
                 key:this.cookies.get('key'),
                 sign:this.cookies.get('sign')
             };
-            if(this.path === '/login'){
+            if(this.path === '/login' || this.path.indexOf('/xhc_img/')>-1){
                 return;
             }
             if(!loginCookie.key || !loginCookie.sign){
@@ -65,7 +65,7 @@ module.exports = {
                 try{
                     yield * next;
                 }catch (error){
-                    log.error(error);
+                    logger.error(error);
                     if(error.message){
                         var er = JSON.parse(error.message);
                         if(er.errorType == 2){//请求借口错误 返回错误信息 页面定位到other/error

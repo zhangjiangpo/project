@@ -4,13 +4,8 @@ module.exports = {
 	editname:(name,oldname,botname,membernum) => {
 		return DB.PG.updateTable('group_info',{name,membernum},` where name = '${oldname}' and botname = '${botname}'`)
 	},
-	editmember:(name,botname,membernum,history_member) => {
-		var data = {
-			membernum:membernum
-		}
-		if(history_member){
-			data['history_member'] = history_member;
-		}
+	editmember:(name,botname,data) => {
+		
 		return DB.PG.updateTable('group_info',data,` where name = '${name}' and botname = '${botname}'`)
 	},
 	editgroup:(param,where) => {
@@ -23,7 +18,7 @@ module.exports = {
 			where += ` and botname=:botname`;
 			param['botname'] = botname;
 		}
-		let sql =`select name,history_member from group_info ${where}`;
+		let sql =`select name,history_member,join_time,day_join_num from group_info ${where}`;
 		return DB.PG.select(sql,param)
 	},
 	getGoodGroup:() => {
@@ -34,5 +29,8 @@ module.exports = {
 		history_member = history_member ? history_member : 0;
 		let sql = `insert into group_info (name,botname,membernum,history_member) values (:name,:botname,:membernum,:history_member);`;
 		return DB.PG.select(sql,{name,botname,membernum,history_member})
+	},
+	addgroupmsg:(data) =>{
+		return DB.PG.insertTable('group_msg',data);
 	}
 }

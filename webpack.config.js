@@ -51,6 +51,7 @@ var config = {
 	output:{
 		filename:'js/[name].js?v=[chunkhash]',
 		path: path.resolve(__dirname , 'static'),
+		publicPath:'/',
 	},
 	resolve:{
 		alias:{
@@ -69,6 +70,9 @@ var config = {
 		loaders:[{
 			test: /\.css$/,
 			loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+		},{
+			test: /\.(png|jpg|gif)$/,
+　　　　　　	loader: 'url-loader?limit=8192&name=xhc_img/[hash:8].[name].[ext]'
 		},{
 			test: /\.js$/,
 			loader: 'babel-loader',
